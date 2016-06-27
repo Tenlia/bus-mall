@@ -1,1 +1,3 @@
-// my javascript will go here
+'use strict';
+
+var imgArray = []
