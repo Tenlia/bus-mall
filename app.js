@@ -31,14 +31,13 @@ function randomNum() {
 
 function displayProduct(picture) {
   var newImage = randomNum();
-  // console.log(newImage);
   for(var i = 0; i < currentDisplay.length; i++) {
     while(newImage === currentDisplay[i]){
       newImage = randomNum();
-      // console.log('we found a duplicate number');
     }
   }
   picture.src = productsArray[newImage].productLink;
+  picture.alt = productsArray[newImage].productName;
   currentDisplay.push(newImage);
 }
 
@@ -46,6 +45,19 @@ function displayThree() {
   displayProduct(left);
   displayProduct(center);
   displayProduct(right);
+}
+
+function addTimesSeen() {
+  var j = 0;
+  while(j < productsArray.length){
+    for(var i = 0; i < currentDisplay.length; i++){
+      if(j === currentDisplay[i]){
+        productsArray[j].productTotalShown++;
+        console.table(productsArray[j]);
+      }
+    }
+    j++;
+  }
 }
 
 function compareArrays() {
@@ -56,82 +68,33 @@ function compareArrays() {
       if(currentDisplay[i] === previousDisplay[j]) {
         currentDisplay = [];
         compareArrays();
-        // console.log('duplicates were found between arrays');
       }
     }
     j++;
   }
+  addTimesSeen();
 }
 
-function refreshing() {
-  compareArrays();
+function clearArrays(){
   previousDisplay = currentDisplay;
   currentDisplay = [];
   console.log('this is the currentDisplay', currentDisplay);
   console.log('this is the previousDisplay', previousDisplay);
 }
-// refreshing();
-container.addEventListener('click', refreshing(), false);
-// function makingPicture() {
-//   var i = 0;
-//   var match = false;
-//   while(!match && i < currentDisplay.length) {
-//     if(imgArray[randomNum] === currentDisplay[i]) {
-//       match = true;
-//     }else {
-//       i++;
-//     }
-//   }
-//   if(!match) {
-//     var productImg = document.createElement('img');
-//     productImg.src = imgArray[randomNum];
-//     products.appendChild(productImg);
-//     currentDisplay.push(imgArray[randomNum]);
-//   }else {
-//     makingPicture();
-//   }
-// };
-//
-// function checkDisplay() {
-//   makingPicture();
-//   var j = 0;
-//   while(j < previousDisplay.length) {
-//     for(var i = 0; i < currentDisplay.length; i++) {
-//       if(currentDisplay[i] === previousDisplay[j]) {
-//         currentDisplay = [];
-//         console.log(i);
-//       }
-//       j++;
-//       console.log(j);
-//     }
-//   }
-// };
-//
-// function clearHTML() {
-//   products.removeChild('img');
-// }
-//
-// function moveArrays() {
-//   currentDisplay = previousDisplay;
-//   previousDisplay = [];
-// };
-//
-// function runEverything() {
-//   if(turns < 25) {
-//     clearHTML();
-//     checkDisplay();
-//     checkDisplay();
-//     checkDisplay();
-//     turns++;
-//   }else{
-//     products.removeEventListener();
-//   }
-//   console.log(currentDisplay);
-//   console.log(previousDisplay);
-// };
-//
-// checkDisplay();
-// checkDisplay();
-// checkDisplay();
-//
-// products.addEventListener('click', runEverything);
+
+function refreshing(event) {
+  // console.log(event.target.alt);
+  for(var i = 0; i < productImg.length; i++){
+    if(event.target.alt === productsArray[i].productName){
+      productsArray[i].productTally += 1;
+    }
+  }
+  console.table(productsArray);
+  compareArrays();
+  clearArrays();
+}
+
+compareArrays();
+clearArrays();
+
+container.addEventListener('click', refreshing);
