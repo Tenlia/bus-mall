@@ -43,6 +43,10 @@ function checkDisplay() {
   }
 };
 
+function clearHTML() {
+  products.removeChild('img');
+}
+
 function moveArrays() {
   currentDisplay = previousDisplay;
   previousDisplay = [];
@@ -50,6 +54,7 @@ function moveArrays() {
 
 function runEverything() {
   if(turns < 25) {
+    clearHTML();
     checkDisplay();
     checkDisplay();
     checkDisplay();
@@ -61,6 +66,8 @@ function runEverything() {
   console.log(previousDisplay);
 };
 
-runEverything();
+checkDisplay();
+checkDisplay();
+checkDisplay();
 
 products.addEventListener('click', runEverything);
