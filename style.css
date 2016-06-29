@@ -31,9 +31,26 @@ img {
   /*margin: 30px 10px;*/
 }
 
+button {
+  border: none;
+  background-color: #ff0a16;
+  font-family: 'Prompt', sans-serif;
+  color: #fff;
+  padding: 6px 15px;
+  border-radius: 2px;
+}
+
 /*footer section*/
 footer {
   padding: 10px 0px;
   background-color: #ff0a16;
   color: #fff;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.active {
+
 }

@@ -12,6 +12,13 @@ var productsArray = [];
 var previousDisplay = [];
 var currentDisplay = [];
 
+var namesArray = [];
+var tallyArray = [];
+var shownArray = [];
+
+showHide.className = 'hidden';
+results.className = 'hidden';
+
 function Product(name, link) {
   this.productName = name;
   this.productLink = link;
@@ -53,7 +60,6 @@ function addTimesSeen() {
     for(var i = 0; i < currentDisplay.length; i++){
       if(j === currentDisplay[i]){
         productsArray[j].productTotalShown++;
-        // console.table(productsArray[j]);
       }
     }
     j++;
@@ -75,11 +81,9 @@ function compareArrays() {
   addTimesSeen();
 }
 
-function clearArrays(){
+function clearArrays() {
   previousDisplay = currentDisplay;
   currentDisplay = [];
-  // console.log('this is the currentDisplay', currentDisplay);
-  // console.log('this is the previousDisplay', previousDisplay);
 }
 
 function refreshing(event) {
@@ -88,59 +92,69 @@ function refreshing(event) {
       productsArray[i].productTally += 1;
     }
   }
-  console.table(productsArray);
   compareArrays();
   clearArrays();
+  if(turns < 24){
+    turns++;
+  }else{
+    container.removeEventListener('click', refreshing);
+    showHide.className = 'active';
+    results.className = 'active';
+  }
+}
+
+function getArray(property, array) {
+  for(var i = 0; i < productsArray.length; i++){
+    if(array[i] = ''){
+      array.push(productsArray[i][property]);
+      console.log('making new array');
+    }else{
+      array[i] += productsArray[i][property];
+      console.log('adding to new array');
+    }
+  }
+  return array;
+}
+
+function getChartArrays() {
+  getArray('productName', namesArray);
+  getArray('productTally', tallyArray);
+  getArray('productTotalShown', shownArray);
+
+  console.log(namesArray, tallyArray, shownArray);
+}
+
+function createChart() {
+  getChartArrays();
+  var resultsChart = document.getElementById('results').getContext('2d');
+  var hibble = new Chart(resultsChart, {
+    type: 'bar',
+    data: {
+      labels: namesArray,
+      datasets: [{
+        label: 'Number of times clicked',
+        data: tallyArray,
+        backgroundColor: '#ff0a16'
+      },{
+        label: 'Number of times shown',
+        data: shownArray,
+        backgroundColor: '#ffffff'
+      }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  });
 }
 
 compareArrays();
 clearArrays();
 
 container.addEventListener('click', refreshing);
-
-var namesArray = [];
-var tallyArray = [];
-var shownArray = [];
-
-function getArray(property, array) {
-  for(var i = 0; i < productsArray.length; i++){
-    array.push(productsArray[i][property]);
-  }
-  // console.log(array);
-  return array;
-}
-
-getArray('productName', namesArray);
-getArray('productTally', tallyArray);
-getArray('productTotalShown', shownArray);
-
-// console.table(namesArray, tallyArray, shownArray);
-
-var resultsChart = document.getElementById('results').getContext('2d');
-
-console.log(namesArray);
-
-var hibble = new Chart(resultsChart, {
-  type: 'bar',
-  data: {
-    labels: namesArray,
-    datasets: [{
-      label: 'Number of times clicked',
-      data: tallyArray,
-      backgroundColor: '#ff0a16'
-    },{
-      label: 'Number of times shown',
-      data: shownArray,
-      backgroundColor: '#ffffff'
-    }]
-  },
-  options: {
-    scales: {
-      yAxes: [{
-        ticks: {
-          beginAtZero: true
-        }
-      }]
-    }
-  }
-});
+showHide.addEventListener('click', createChart);
