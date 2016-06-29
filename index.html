@@ -5,6 +5,7 @@
     <link href="reset.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Prompt:500|Proza+Libre" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.6/Chart.min.js" rel="charts"></script>
   </head>
   <body>
     <header>
@@ -14,7 +15,12 @@
       <p>Hello, welcome to the <span>Bus-Mall&#169;</span> Product testing! You're here to help us determine the products that we will be carrying in our <span>Bus-Mall&#169;</span> catalog on all buses around the Puget Sound. Thank you for your cooperation in making <span>Bus-Mall&#169;</span> the best bus-based catalog in Washington!</p>
       <p>Please click on one of the images below to get started.</p>
       <!-- <p>your results will not be shown until you finish the testing</p> -->
-      <container id="products"></container>
+      <container id="container">
+        <img id="left">
+        <img id="center">
+        <img id="right">
+      </container>
+      <canvas id="results" width="900px" height="300px"></canvas>
     </main>
     <footer><p>Copyright <span>Bus-Mall&#169;</span> Catalogs</p></footer>
     <script src="app.js"></script>
