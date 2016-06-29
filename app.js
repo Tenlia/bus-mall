@@ -53,7 +53,7 @@ function addTimesSeen() {
     for(var i = 0; i < currentDisplay.length; i++){
       if(j === currentDisplay[i]){
         productsArray[j].productTotalShown++;
-        console.table(productsArray[j]);
+        // console.table(productsArray[j]);
       }
     }
     j++;
@@ -78,12 +78,11 @@ function compareArrays() {
 function clearArrays(){
   previousDisplay = currentDisplay;
   currentDisplay = [];
-  console.log('this is the currentDisplay', currentDisplay);
-  console.log('this is the previousDisplay', previousDisplay);
+  // console.log('this is the currentDisplay', currentDisplay);
+  // console.log('this is the previousDisplay', previousDisplay);
 }
 
 function refreshing(event) {
-  // console.log(event.target.alt);
   for(var i = 0; i < productImg.length; i++){
     if(event.target.alt === productsArray[i].productName){
       productsArray[i].productTally += 1;
@@ -98,3 +97,50 @@ compareArrays();
 clearArrays();
 
 container.addEventListener('click', refreshing);
+
+var namesArray = [];
+var tallyArray = [];
+var shownArray = [];
+
+function getArray(property, array) {
+  for(var i = 0; i < productsArray.length; i++){
+    array.push(productsArray[i][property]);
+  }
+  // console.log(array);
+  return array;
+}
+
+getArray('productName', namesArray);
+getArray('productTally', tallyArray);
+getArray('productTotalShown', shownArray);
+
+// console.table(namesArray, tallyArray, shownArray);
+
+var resultsChart = document.getElementById('results').getContext('2d');
+
+console.log(namesArray);
+
+var hibble = new Chart(resultsChart, {
+  type: 'bar',
+  data: {
+    labels: namesArray,
+    datasets: [{
+      label: 'Number of times clicked',
+      data: tallyArray,
+      backgroundColor: '#ff0a16'
+    },{
+      label: 'Number of times shown',
+      data: shownArray,
+      backgroundColor: '#ffffff'
+    }]
+  },
+  options: {
+    scales: {
+      yAxes: [{
+        ticks: {
+          beginAtZero: true
+        }
+      }]
+    }
+  }
+});
