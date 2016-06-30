@@ -188,7 +188,7 @@ function createChart() {
   });
 }
 
-function createTableHeaders() {
+function createTableHeader() {
   var trEl = document.createElement('tr');
   trEl.className = 'headerCells';
   var thEl = document.createElement('th');
@@ -208,6 +208,7 @@ function createTableHeaders() {
 
 function createTableRows() {
   for(var i = 0; i < namesArray.length; i++) {
+    var percent = (Math.round((tallyArray[i] / shownArray[i]) * 100)) + ' %';
     var trEl = document.createElement('tr');
     trEl.className = 'allCells';
     var tdEl = document.createElement('td');
@@ -231,7 +232,7 @@ function finishedTest() {
   packToLocal();
   showHide.className = 'hidden';
   createChart();
-  createTableHeaders();
+  createTableHeader();
   createTableRows();
 }
 
