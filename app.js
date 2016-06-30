@@ -2,10 +2,13 @@
 
 var productImg = ['bag.jpg', 'banana.jpg', 'bathroom.jpg', 'boots.jpg', 'breakfast.jpg', 'bubblegum.jpg', 'chair.jpg', 'cthulhu.jpg', 'dog-duck.jpg', 'dragon.jpg', 'pen.jpg', 'pet-sweep.jpg', 'scissors.jpg', 'shark.jpg', 'sweep.png', 'tauntaun.jpg', 'unicorn.jpg', 'usb.gif', 'water-can.jpg', 'wine-glass.jpg'];
 
+var start = document.getElementById('start');
 var container = document.getElementById('container');
 var left = document.getElementById('left');
 var center = document.getElementById('center');
 var right = document.getElementById('right');
+var percentTable = document.getElementById('percentTable');
+
 var turns = 0;
 
 var productsArray = [];
@@ -16,6 +19,10 @@ var namesArray = [];
 var tallyArray = [];
 var shownArray = [];
 
+var tallyLocalArray = [];
+var shownLocalArray = [];
+
+container.className = 'hidden';
 showHide.className = 'hidden';
 results.className = 'hidden';
 
@@ -26,14 +33,30 @@ function Product(name, link) {
   this.productTotalShown = 0;
 }
 
-for(var i = 0; i < productImg.length; i++) {
-  var picToName = productImg[i].slice(0,-4);
-  var picToLink = ('img/' + productImg[i]);
-  productsArray.push(new Product(picToName, picToLink));
+function makingProducts() {
+  for(var i = 0; i < productImg.length; i++) {
+    var picToName = productImg[i].slice(0,-4);
+    var picToLink = ('img/' + productImg[i]);
+    productsArray.push(new Product(picToName, picToLink));
+  }
 }
 
 function randomNum() {
   return Math.floor(Math.random() * productImg.length);
+}
+
+function unpackLocal() {
+  if(localStorage.chartTally) {
+    tallyLocalArray = JSON.parse(localStorage.chartTally);
+  }
+  if(localStorage.chartShown) {
+    shownLocalArray = JSON.parse(localStorage.chartShown);
+  }
+}
+
+function packToLocal() {
+  localStorage.chartTally = (JSON.stringify(tallyArray));
+  localStorage.chartShown = (JSON.stringify(shownArray));
 }
 
 function displayProduct(picture) {
@@ -103,17 +126,29 @@ function refreshing(event) {
   }
 }
 
+function startTest() {
+  container.className = 'active';
+  compareArrays();
+  clearArrays();
+  start.className = 'hidden';
+  startPara.className = 'hidden';
+}
+
 function getArray(property, array) {
   for(var i = 0; i < productsArray.length; i++){
-    if(array[i] = ''){
+    if(!array[i]){
       array.push(productsArray[i][property]);
-      console.log('making new array');
     }else{
       array[i] += productsArray[i][property];
-      console.log('adding to new array');
     }
   }
   return array;
+}
+
+function addingArrays(oldArray, newArray) {
+  for(var i = 0; i < oldArray.length; i++) {
+    newArray[i] += oldArray[i];
+  }
 }
 
 function getChartArrays() {
@@ -121,11 +156,11 @@ function getChartArrays() {
   getArray('productTally', tallyArray);
   getArray('productTotalShown', shownArray);
 
-  console.log(namesArray, tallyArray, shownArray);
+  addingArrays(tallyLocalArray, tallyArray);
+  addingArrays(shownLocalArray, shownArray);
 }
 
 function createChart() {
-  getChartArrays();
   var resultsChart = document.getElementById('results').getContext('2d');
   var hibble = new Chart(resultsChart, {
     type: 'bar',
@@ -153,8 +188,57 @@ function createChart() {
   });
 }
 
-compareArrays();
-clearArrays();
+function createTableHeader() {
+  var trEl = document.createElement('tr');
+  trEl.className = 'headerCells';
+  var thEl = document.createElement('th');
+  thEl.textContent = 'Products';
+  trEl.appendChild(thEl);
+  var thEl = document.createElement('th');
+  thEl.textContent = 'Number of Views';
+  trEl.appendChild(thEl);
+  var thEl = document.createElement('th');
+  thEl.textContent = 'Number of Clicks';
+  trEl.appendChild(thEl);
+  var thEl = document.createElement('th');
+  thEl.textContent = 'Clickthrough Percentage';
+  trEl.appendChild(thEl);
+  percentTable.appendChild(trEl);
+}
 
+function createTableRows() {
+  for(var i = 0; i < namesArray.length; i++) {
+    var percent = (Math.round((tallyArray[i] / shownArray[i]) * 100)) + ' %';
+    var trEl = document.createElement('tr');
+    trEl.className = 'allCells';
+    var tdEl = document.createElement('td');
+    tdEl.textContent = namesArray[i];
+    trEl.appendChild(tdEl);
+    var tdEl = document.createElement('td');
+    tdEl.textContent = shownArray[i];
+    trEl.appendChild(tdEl);
+    var tdEl = document.createElement('td');
+    tdEl.textContent = tallyArray[i];
+    trEl.appendChild(tdEl);
+    var tdEl = document.createElement('td');
+    tdEl.textContent = (Math.round((tallyArray[i] / shownArray[i]) * 100)) + ' %';
+    trEl.appendChild(tdEl);
+    percentTable.appendChild(trEl);
+  }
+}
+
+function finishedTest() {
+  getChartArrays();
+  packToLocal();
+  showHide.className = 'hidden';
+  createChart();
+  createTableHeader();
+  createTableRows();
+}
+
+unpackLocal();
+makingProducts();
+
+start.addEventListener('click', startTest);
 container.addEventListener('click', refreshing);
-showHide.addEventListener('click', createChart);
+showHide.addEventListener('click', finishedTest);

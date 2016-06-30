@@ -27,8 +27,9 @@ body {
 
 img {
   width: 300px;
+  height: 400px;
   display: inline;
-  /*margin: 30px 10px;*/
+  cursor: pointer;
 }
 
 button {
@@ -38,6 +39,31 @@ button {
   color: #fff;
   padding: 6px 15px;
   border-radius: 2px;
+  cursor: pointer;
+}
+table {
+  width: 400px;
+  height: 500px;
+  margin: 20px auto;
+}
+
+table .headerCells {
+  background-color: #ff0a16;
+  color: #fff;
+  border: 1px dotted #fff;
+}
+
+table .allCells {
+  border: 1px dotted #000;
+  background-color: #fff;
+}
+
+.start {
+  display: inline;
+}
+
+#start {
+  margin: 20px auto;
 }
 
 /*footer section*/
@@ -47,10 +73,10 @@ footer {
   color: #fff;
 }
 
+/*item visibility*/
 .hidden {
   visibility: hidden;
 }
 
 .active {
-
 }
