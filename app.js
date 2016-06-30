@@ -48,22 +48,15 @@ function randomNum() {
 function unpackLocal() {
   if(localStorage.chartTally) {
     tallyLocalArray = JSON.parse(localStorage.chartTally);
-    console.log('this is the tallyLocalArray', tallyLocalArray);
-  }else{
-    console.log('there was no tallyLocalArray');
   }
   if(localStorage.chartShown) {
     shownLocalArray = JSON.parse(localStorage.chartShown);
-    console.log('this is the shownLocalArray', shownLocalArray);
-  }else{
-    console.log('there was no shownLocalArray');
   }
 }
 
 function packToLocal() {
   localStorage.chartTally = (JSON.stringify(tallyArray));
   localStorage.chartShown = (JSON.stringify(shownArray));
-  console.log('everything\'s packed');
 }
 
 function displayProduct(picture) {
@@ -197,7 +190,7 @@ function createChart() {
 
 function createTableHeaders() {
   var trEl = document.createElement('tr');
-  trEl.id = 'headerCells';
+  trEl.className = 'headerCells';
   var thEl = document.createElement('th');
   thEl.textContent = 'Products';
   trEl.appendChild(thEl);
@@ -211,21 +204,26 @@ function createTableHeaders() {
   thEl.textContent = 'Clickthrough Percentage';
   trEl.appendChild(thEl);
   percentTable.appendChild(trEl);
-  console.log('table made');
 }
 
 function createTableRows() {
-  var trEl = document.createElement('tr');
-  trEl.id = 'allCells';
-  var tdEl = document.createElement('td');
-  tdEl.textContent = namesArray[0];
-  thEl.appendChild(tdEl);
-  var tdEl = document.createElement('td');
-  tdEl.textContent = shownArray[0];
-  thEl.appendChild(tdEl);
-  var tdEl = document.createElement('td');
-  tdEl.textContent = tallyArray[0];
-  thEl.appendChild(tdEl);
+  for(var i = 0; i < namesArray.length; i++) {
+    var trEl = document.createElement('tr');
+    trEl.className = 'allCells';
+    var tdEl = document.createElement('td');
+    tdEl.textContent = namesArray[i];
+    trEl.appendChild(tdEl);
+    var tdEl = document.createElement('td');
+    tdEl.textContent = shownArray[i];
+    trEl.appendChild(tdEl);
+    var tdEl = document.createElement('td');
+    tdEl.textContent = tallyArray[i];
+    trEl.appendChild(tdEl);
+    var tdEl = document.createElement('td');
+    tdEl.textContent = (Math.round((tallyArray[i] / shownArray[i]) * 100)) + ' %';
+    trEl.appendChild(tdEl);
+    percentTable.appendChild(trEl);
+  }
 }
 
 function finishedTest() {
@@ -234,6 +232,7 @@ function finishedTest() {
   showHide.className = 'hidden';
   createChart();
   createTableHeaders();
+  createTableRows();
 }
 
 unpackLocal();
