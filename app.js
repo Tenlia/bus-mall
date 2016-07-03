@@ -2,11 +2,13 @@
 
 var productImg = ['bag.jpg', 'banana.jpg', 'bathroom.jpg', 'boots.jpg', 'breakfast.jpg', 'bubblegum.jpg', 'chair.jpg', 'cthulhu.jpg', 'dog-duck.jpg', 'dragon.jpg', 'pen.jpg', 'pet-sweep.jpg', 'scissors.jpg', 'shark.jpg', 'sweep.png', 'tauntaun.jpg', 'unicorn.jpg', 'usb.gif', 'water-can.jpg', 'wine-glass.jpg'];
 
+var welcome = document.getElementById('welcome');
 var start = document.getElementById('start');
 var container = document.getElementById('container');
 var left = document.getElementById('left');
 var center = document.getElementById('center');
 var right = document.getElementById('right');
+var instructions = document.getElementById('instructions');
 var percentTable = document.getElementById('percentTable');
 
 var turns = 0;
@@ -130,6 +132,7 @@ function startTest() {
   container.className = 'active';
   compareArrays();
   clearArrays();
+  welcome.className = 'hidden';
   start.className = 'hidden';
   startPara.className = 'hidden';
 }
@@ -231,6 +234,8 @@ function finishedTest() {
   getChartArrays();
   packToLocal();
   showHide.className = 'hidden';
+  container.className = 'hidden';
+  instructions.className = 'hidden';
   createChart();
   createTableHeader();
   createTableRows();
