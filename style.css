@@ -76,6 +76,7 @@ footer {
 /*item visibility*/
 .hidden {
   visibility: hidden;
+  height: 0px;
 }
 
 .active {
