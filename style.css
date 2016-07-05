@@ -2,6 +2,14 @@
   /*outline: 1px dotted orange;*/
 }
 
+body {
+  font-family: 'Prompt', sans-serif;
+  width: 960px;
+  background-color: #ddd;
+  margin: 0px auto;
+  text-align: center;
+}
+
 /*header section*/
 header {
   width: 960px;
@@ -17,12 +25,8 @@ span {
 }
 
 /*main section*/
-body {
-  font-family: 'Prompt', sans-serif;
-  width: 960px;
-  background-color: #ddd;
-  margin: 0px auto;
-  text-align: center;
+main p {
+  padding: 20px 15px;
 }
 
 img {
@@ -76,6 +80,7 @@ footer {
 /*item visibility*/
 .hidden {
   visibility: hidden;
+  height: 0px;
 }
 
 .active {
