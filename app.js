@@ -111,23 +111,6 @@ function clearArrays() {
   currentDisplay = [];
 }
 
-function refreshing(event) {
-  for(var i = 0; i < productImg.length; i++){
-    if(event.target.alt === productsArray[i].productName){
-      productsArray[i].productTally += 1;
-    }
-  }
-  compareArrays();
-  clearArrays();
-  if(turns < 24){
-    turns++;
-  }else{
-    container.removeEventListener('click', refreshing);
-    showHide.className = 'active';
-    results.className = 'active';
-  }
-}
-
 function startTest() {
   container.className = 'active';
   compareArrays();
@@ -151,6 +134,32 @@ function getArray(property, array) {
 function addingArrays(oldArray, newArray) {
   for(var i = 0; i < oldArray.length; i++) {
     newArray[i] += oldArray[i];
+  }
+}
+
+function refreshing(event) {
+  for(var i = 0; i < productImg.length; i++){
+    if(event.target.alt === productsArray[i].productName){
+      productsArray[i].productTally += 1;
+    }
+  }
+  compareArrays();
+  clearArrays();
+  if(turns < 24){
+    turns++;
+    getArray('productTally', tallyArray);
+    getArray('productTotalShown', shownArray);
+    addingArrays(tallyLocalArray, tallyArray);
+    addingArrays(shownLocalArray, shownArray);
+    packToLocal();
+    tallyArray = [];
+    shownArray = [];
+    // console.log(tallyLocalArray);
+    // console.log(shownLocalArray);
+  }else{
+    container.removeEventListener('click', refreshing);
+    showHide.className = 'active';
+    results.className = 'active';
   }
 }
 
